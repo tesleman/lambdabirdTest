@@ -1,48 +1,37 @@
-import {
-  Container,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from '@material-ui/core';
+import { Container } from '@material-ui/core';
+import { GetServerSideProps } from 'next';
 import React from 'react';
+import Filters from './component/Filter';
+import CustomTable from './component/Table';
+import { cardProps } from './database/dbprops';
 
-const Home = () => {
+export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
+  const props = await cardProps(query);
+
+  return {
+    props: { biatlonist: props },
+    // will be passed to the page component as props
+  };
+};
+1;
+
+export interface propsHomeI {
+  _id: string;
+  place: number;
+  name: string;
+  shooting: string;
+  hits: number;
+  rateoffire: string;
+  time: string;
+}
+
+const Home: React.FC<{ biatlonist: string }> = ({ biatlonist }) => {
+  const biatlons: Array<propsHomeI> = JSON.parse(biatlonist);
+
   return (
     <Container>
-      <TableContainer>
-        <Table aria-label="caption table">
-          <caption>A basic table example with a caption</caption>
-          <TableHead>
-            <TableRow>
-              <TableCell>Place</TableCell>
-              <TableCell align="right">Name</TableCell>
-              <TableCell align="right">Shooting</TableCell>
-              <TableCell align="right">Hits</TableCell>
-              <TableCell align="right">Rate of fire</TableCell>
-              <TableCell align="right">Time</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {Array(8)
-              .fill(0)
-              .map((row, i) => (
-                <TableRow key={i}>
-                  <TableCell component="th" scope="row">
-                    {i + 1}
-                  </TableCell>
-                  <TableCell align="right">{1}</TableCell>
-                  <TableCell align="right">{1}</TableCell>
-                  <TableCell align="right">{1}</TableCell>
-                  <TableCell align="right">{1}</TableCell>
-                  <TableCell align="right">{1}</TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Filters />
+      <CustomTable biatlons={biatlons} />
     </Container>
   );
 };
