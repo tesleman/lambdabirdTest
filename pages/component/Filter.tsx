@@ -44,15 +44,15 @@ const sortConst: Array<sortConstI> = [
 
 const Filters = () => {
   const router = useRouter();
-  const [qeryState, setQeryState] = React.useState('place 1');
-  const [qeryTextState, setQeryTextState] = React.useState(
+  const [qeryState, setQeryState] = React.useState<string>('place 1');
+  const [qeryTextState, setQeryTextState] = React.useState<string>(
     router.query.q ? (router.query.q as string) : '',
   );
 
   const sorting = (value: string) => {
     if (!value) return;
-    const filterByInut = sortConst.find((e: sortConstI) => e.value === value);
-    const splitedValue = filterByInut.value.split(' ');
+    //разбивка значения инпута для формата чтоб запушить в qery
+    const splitedValue = value.split(' ');
     return { [splitedValue[0]]: parseInt(splitedValue[1]) };
   };
 
@@ -69,9 +69,8 @@ const Filters = () => {
 
   const setQeryFunctyon = () => {
     const sort = sorting(qeryState);
-
     const text = textPageSearch(qeryTextState);
-
+    // пушим всё в qery
     router.push(
       {
         pathname: '',
@@ -107,7 +106,7 @@ const Filters = () => {
             defaultValue={router.query[0] ? router.query[0] : qeryState}
             onChange={onHandleChang}
             name="price">
-            {sortConst.map((element, index) => (
+            {sortConst.map((element: sortConstI, index: number) => (
               <option key={index} value={element.value}>
                 {element.text}
               </option>

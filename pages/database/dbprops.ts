@@ -7,6 +7,7 @@ export const cardProps = async (query: NextApiRequestQuery) => {
 
   try {
     if (db.readyState !== 1)
+    //если нет подключения к бд нужно вернуть объект чтоб приложение не закрашилось
       return JSON.stringify([
         {
           _id: '',

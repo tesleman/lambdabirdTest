@@ -13,7 +13,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query }) => 
     // will be passed to the page component as props
   };
 };
-1;
 
 export interface propsHomeI {
   _id: string;
